@@ -53,10 +53,24 @@ class Forecast {
     );
 
     if (cityWeather) {
-      return cityWeather;
+      // Modify the data to only include the necessary information
+      return cityWeather.data.map(day => new ForecastData('Low of ' + celsiusToFahrenheit(day.low_temp) 
+      + ', high of ' + celsiusToFahrenheit(day.high_temp) + ' with ' + day.weather.description, day.valid_date));
     } else {
       return { error: 'City not found in data.' };
     }
+  }
+}
+
+// Let's use standard measurement units for the forecast
+function celsiusToFahrenheit(celsius) {
+  return celsius * 9 / 5 + 32;
+}
+
+class ForecastData {
+  constructor(description, date) {
+    this.description = description;
+    this.date = date;
   }
 }
 
