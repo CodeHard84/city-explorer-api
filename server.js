@@ -24,22 +24,22 @@ app.get('/hello/:name', (req, res) => {
 app.get('/weather', (req, res) => {
   const { searchQuery, lat, lon } = req.query;
   if (searchQuery && lat && lon) {
-    const weather = new Weather(searchQuery, lat, lon);
-    res.status(200).json(weather.weatherInfo);
+    const forecast = new Forecast(searchQuery, lat, lon);
+    res.status(200).json(forecast.forecastInfo);
   } else {
     res.status(400).send('Please specify searchQuery, lat, and lon in the query string. Example: /weather?searchQuery=Seattle&lat=47.6038321&lon=-122.330062');
   }
 });
 
-class Weather {
+class Forecast {
   constructor(searchQuery, lat, lon) {
     this.searchQuery = searchQuery;
     this.lat = lat;
     this.lon = lon;
-    this.weatherInfo = this.getWeather();
+    this.forecastInfo = this.getForecast();
   }
 
-  getWeather() {
+  getForecast() {
     const { searchQuery, lat, lon } = this;
     if (!searchQuery || !lat || !lon) {
       return { error: 'searchQuery, lat, or lon not provided' };
@@ -66,6 +66,7 @@ app.use((error, req, res, next) => {
   res.status(500).send(error.message);
 });
 
+// Catch-all route for 404 errors
 app.get('*', (req, res) => {
   res.status(404).send('Page not found');
 });
