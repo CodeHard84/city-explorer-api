@@ -6,6 +6,10 @@ const port = process.env.PORT || 3000;
 // Load data/weather.json into an array
 const weatherData = require('./data/weather.json');
 
+// Middleware
+const cors = require('cors');
+app.use(cors());
+
 // Home route
 app.get('/', (req, res) => {
   res.status(200).send('Hello World!');
