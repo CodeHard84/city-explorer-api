@@ -27,7 +27,7 @@ app.get('/weather', (req, res) => {
     const forecast = new Forecast(searchQuery, lat, lon);
     res.status(200).json(forecast.forecastInfo);
   } else {
-    res.status(400).send('Please specify searchQuery, lat, and lon in the query string. Example: /weather?searchQuery=Seattle&lat=47.6038321&lon=-122.330062');
+    res.status(500).send('Please specify searchQuery, lat, and lon in the query string. Example: /weather?searchQuery=Seattle&lat=47.6038321&lon=-122.330062');
   }
 });
 
@@ -55,7 +55,7 @@ class Forecast {
     if (cityWeather) {
       // Modify the data to only include the necessary information
       return cityWeather.data.map(day => new ForecastData('Low of ' + celsiusToFahrenheit(day.low_temp) 
-      + ', high of ' + celsiusToFahrenheit(day.high_temp) + ' with ' + day.weather.description, day.valid_date));
+      + ', high of ' + celsiusToFahrenheit(day.high_temp) + ' with ' + day.weather.description + '.', day.valid_date));
     } else {
       return { error: 'City not found in data.' };
     }
