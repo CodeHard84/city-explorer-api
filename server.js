@@ -1,6 +1,7 @@
 const express = require('express');
+const env = require('dotenv').config();
 const app = express();
-const port = 4040;
+const port = env.parsed.PORT || 3000;
 
 // Home route
 app.get('/', (req, res) => {
