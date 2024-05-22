@@ -66,7 +66,7 @@ class Forecast {
 
 // Let's use standard measurement units for the forecast
 function celsiusToFahrenheit(celsius) {
-  return (celsius * 9) / 5 + 32;
+  return Math.round((celsius * 9) / 5 + 32);
 }
 
 class ForecastData {
