@@ -54,7 +54,7 @@ class Forecast {
       const weatherData = response.data.data;
 
       return weatherData.map(day => new ForecastData(
-        `Low of ${celsiusToFahrenheit(day.low_temp)}, high of ${celsiusToFahrenheit(day.high_temp)} with ${day.weather.description}.`,
+        `Low of ${celsiusToFahrenheit(day.low_temp)}°F, high of ${celsiusToFahrenheit(day.high_temp)}°F with ${day.weather.description}.`,
         day.valid_date
       ));
     } catch (error) {
