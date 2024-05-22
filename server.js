@@ -7,7 +7,7 @@ const WEATHER_API_KEY = process.env.WEATHER_API_KEY;
 
 // Middleware
 const cors = require('cors');
-app.use(cors({ origin: '*'}));
+app.use(cors({ origin: '*' }));
 
 // Home route
 app.get('/', (req, res) => {
@@ -34,7 +34,7 @@ app.get('/weather', async (req, res) => {
   }
 });
 
-// Movies route
+// Movies route and class
 app.get('/movies', async (req, res) => {
   const { searchQuery } = req.query;
   if (searchQuery) {
@@ -59,19 +59,19 @@ class Movies {
       const response = await axios.get(`https://api.themoviedb.org/3/search/movie`, {
         params: {
           query: this.searchQuery,
-          api_key: process.env.MOVIES_API_KEY
+          api_key: process.env.MOVIE_API_KEY
         }
       });
       const movies = response.data.results;
 
-      return movies.map(movie => new Movie(
-        movie.title,
-        movie.overview,
-        movie.vote_average,
-        movie.vote_count,
-        movie.poster_path,
-        movie.popularity
-      ));
+      return movies.map(movie => ({
+        title: movie.title,
+        overview: movie.overview,
+        vote_average: movie.vote_average,
+        vote_count: movie.vote_count,
+        poster_path: movie.poster_path,
+        popularity: movie.popularity
+      }));
     } catch (error) {
       console.log(error);
       throw new Error('Error getting movie data.');
@@ -81,7 +81,6 @@ class Movies {
 
 class Forecast {
   constructor(searchQuery, lat, lon) {
-    this.searchQuery = searchQuery;
     this.lat = lat;
     this.lon = lon;
   }
@@ -90,7 +89,6 @@ class Forecast {
     try {
       const response = await axios.get(`https://api.weatherbit.io/v2.0/forecast/daily`, {
         params: {
-          // city: this.searchQuery,
           lat: this.lat,
           lon: this.lon,
           key: WEATHER_API_KEY
@@ -98,10 +96,10 @@ class Forecast {
       });
       const weatherData = response.data.data;
 
-      return weatherData.map(day => new ForecastData(
-        `Low of ${celsiusToFahrenheit(day.low_temp)}°F, high of ${celsiusToFahrenheit(day.high_temp)}°F with ${day.weather.description}.`,
-        day.valid_date
-      ));
+      return weatherData.map(day => ({
+        description: `Low of ${celsiusToFahrenheit(day.low_temp)}°F, high of ${celsiusToFahrenheit(day.high_temp)}°F with ${day.weather.description}.`,
+        date: day.valid_date
+      }));
     } catch (error) {
       console.log(error);
       throw new Error('Error getting weather data.');
@@ -109,16 +107,9 @@ class Forecast {
   }
 }
 
-// Let's use standard measurement units for the forecast
+// Convert Celsius to Fahrenheit
 function celsiusToFahrenheit(celsius) {
   return Math.round((celsius * 9) / 5 + 32);
-}
-
-class ForecastData {
-  constructor(description, date) {
-    this.description = description;
-    this.date = date;
-  }
 }
 
 // Error handling middleware
