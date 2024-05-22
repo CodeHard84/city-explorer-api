@@ -34,6 +34,51 @@ app.get('/weather', async (req, res) => {
   }
 });
 
+// Movies route
+app.get('/movies', async (req, res) => {
+  const { searchQuery } = req.query;
+  if (searchQuery) {
+    try {
+      const movies = await new Movies(searchQuery).getMovies();
+      res.status(200).json(movies);
+    } catch (error) {
+      res.status(500).send(error.message);
+    }
+  } else {
+    res.status(400).send('Please specify searchQuery in the query string. Example: /movies?searchQuery=Seattle');
+  }
+});
+
+class Movies {
+  constructor(searchQuery) {
+    this.searchQuery = searchQuery;
+  }
+
+  async getMovies() {
+    try {
+      const response = await axios.get(`https://api.themoviedb.org/3/search/movie`, {
+        params: {
+          query: this.searchQuery,
+          api_key: process.env.MOVIES_API_KEY
+        }
+      });
+      const movies = response.data.results;
+
+      return movies.map(movie => new Movie(
+        movie.title,
+        movie.overview,
+        movie.vote_average,
+        movie.vote_count,
+        movie.poster_path,
+        movie.popularity
+      ));
+    } catch (error) {
+      console.log(error);
+      throw new Error('Error getting movie data.');
+    }
+  }
+}
+
 class Forecast {
   constructor(searchQuery, lat, lon) {
     this.searchQuery = searchQuery;
