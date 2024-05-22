@@ -7,7 +7,7 @@ const WEATHER_API_KEY = process.env.WEATHER_API_KEY;
 
 // Middleware
 const cors = require('cors');
-app.use(cors());
+app.use(cors({ origin: '*'}));
 
 // Home route
 app.get('/', (req, res) => {
