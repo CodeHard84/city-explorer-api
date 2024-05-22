@@ -45,7 +45,7 @@ class Forecast {
     try {
       const response = await axios.get(`https://api.weatherbit.io/v2.0/forecast/daily`, {
         params: {
-          city: this.searchQuery,
+          // city: this.searchQuery,
           lat: this.lat,
           lon: this.lon,
           key: WEATHER_API_KEY
