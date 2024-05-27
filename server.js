@@ -12,11 +12,6 @@ const { Movies } = require('./movies');
 const cors = require('cors');
 app.use(cors({ origin: '*' }));
 
-// Home route
-app.get('/', (req, res) => {
-  res.status(200).send('Hello World!');
-});
-
 // Weather route
 app.get('/weather', async (req, res) => {
   const { searchQuery, lat, lon } = req.query;
