@@ -4,8 +4,9 @@ const axios = require('axios');
 const app = express();
 const port = process.env.PORT || 3000;
 
-// Import the weather module
+// Import the weather and movies modules
 const { Forecast } = require('./weather');
+const { Movies } = require('./movies');
 
 // Middleware
 const cors = require('cors');
@@ -31,7 +32,7 @@ app.get('/weather', async (req, res) => {
   }
 });
 
-// Movies route and class
+// Movies route
 app.get('/movies', async (req, res) => {
   const { searchQuery } = req.query;
   if (searchQuery) {
@@ -45,36 +46,6 @@ app.get('/movies', async (req, res) => {
     res.status(400).send('Please specify searchQuery in the query string. Example: /movies?searchQuery=Seattle');
   }
 });
-
-class Movies {
-  constructor(searchQuery) {
-    this.searchQuery = searchQuery;
-  }
-
-  async getMovies() {
-    try {
-      const response = await axios.get(`https://api.themoviedb.org/3/search/movie`, {
-        params: {
-          query: this.searchQuery,
-          api_key: process.env.MOVIE_API_KEY
-        }
-      });
-      const movies = response.data.results;
-
-      return movies.map(movie => ({
-        title: movie.title,
-        overview: movie.overview,
-        vote_average: movie.vote_average,
-        vote_count: movie.vote_count,
-        poster_path: movie.poster_path,
-        popularity: movie.popularity
-      }));
-    } catch (error) {
-      console.log(error);
-      throw new Error('Error getting movie data.');
-    }
-  }
-}
 
 // Error handling middleware
 app.use((error, req, res, next) => {
