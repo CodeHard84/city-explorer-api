@@ -3,10 +3,12 @@ const express = require('express');
 const axios = require('axios');
 const app = express();
 const port = process.env.PORT || 3000;
+const Cache = require('./cache');
+
 
 // Import the weather and movies modules
-const { Forecast } = require('./weather');
-const { Movies } = require('./movies');
+const { Forecast } = require('./modules/weather');
+const { Movies } = require('./modules/movies');
 
 // Middleware
 const cors = require('cors');
