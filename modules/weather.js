@@ -29,7 +29,6 @@ class Forecast {
             }));
 
             cache.set(cacheKey, formattedData);
-            console.log('Cache set:', cacheKey);
 
             res.json(formattedData);
         } catch (error) {

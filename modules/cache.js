@@ -27,6 +27,7 @@ class Cache {
     }
 
     set(key, value) {
+        console.log('Cache set:', key);
         this.cache[key] = value;
     }
 

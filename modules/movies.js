@@ -7,12 +7,6 @@ class Movies {
       const searchQuery = req.query.searchQuery;
       const cacheKey = `movies_${searchQuery}`;
 
-      // Debug
-      console.log('Movies Debug:');
-      console.log('Search query:', searchQuery);
-      console.log('Cache key:', cacheKey);
-      console.log('Cache instance:', cache);
-
       if (cache.has(cacheKey)) {
         return res.json(cache.get(cacheKey));
       }
@@ -36,7 +30,6 @@ class Movies {
       }));
 
       cache.set(cacheKey, formattedMovies);
-      console.log('Cache set:', cacheKey);
 
       res.json(formattedMovies);
     } catch (error) {
