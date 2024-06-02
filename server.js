@@ -3,7 +3,10 @@ const express = require('express');
 const axios = require('axios');
 const app = express();
 const port = process.env.PORT || 3000;
-const Cache = require('./cache');
+const Cache = require('./modules/cache');
+
+// Create a new global cache object with a max age of 60000 milliseconds
+const cache = new Cache(60000);
 
 
 // Import the weather and movies modules
@@ -32,3 +35,6 @@ app.get('*', (req, res) => {
 app.listen(port, () => {
   console.log(`Listening at http://localhost:${port}`);
 });
+
+// Now each module needs to require the server.js file to access the cache object.
+module.exports = cache;
