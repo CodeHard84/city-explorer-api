@@ -4,10 +4,13 @@ const cache = require('../server');
 class Movies {
   static async getMovies(req, res) {
     try {
-      const searchQuery = req.query.query || 'popular';
+      const searchQuery = req.query.searchQuery;
       const cacheKey = `movies_${searchQuery}`;
 
       // Debug
+      console.log('Movies Debug:');
+      console.log('Search query:', searchQuery);
+      console.log('Cache key:', cacheKey);
       console.log('Cache instance:', cache);
 
       if (cache.has(cacheKey)) {

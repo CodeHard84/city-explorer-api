@@ -31,6 +31,7 @@ class Cache {
     }
 
     has(key) {
+        console.log('Cache has:', key);
         return this.cache.hasOwnProperty(key);
     }
 
