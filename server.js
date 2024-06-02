@@ -12,35 +12,9 @@ const { Movies } = require('./movies');
 const cors = require('cors');
 app.use(cors({ origin: '*' }));
 
-// Weather route
-app.get('/weather', async (req, res) => {
-  const { searchQuery, lat, lon } = req.query;
-  if (searchQuery && lat && lon) {
-    try {
-      const forecast = await new Forecast(searchQuery, lat, lon).getForecast();
-      res.status(200).json(forecast);
-    } catch (error) {
-      res.status(500).send(error.message);
-    }
-  } else {
-    res.status(400).send('Please specify searchQuery, lat, and lon in the query string. Example: /weather?searchQuery=Seattle&lat=47.6038321&lon=-122.330062');
-  }
-});
+app.get('/weather', Forecast.getForecast(req, res));
 
-// Movies route
-app.get('/movies', async (req, res) => {
-  const { searchQuery } = req.query;
-  if (searchQuery) {
-    try {
-      const movies = await new Movies(searchQuery).getMovies();
-      res.status(200).json(movies);
-    } catch (error) {
-      res.status(500).send(error.message);
-    }
-  } else {
-    res.status(400).send('Please specify searchQuery in the query string. Example: /movies?searchQuery=Seattle');
-  }
-});
+app.get('/movies', Movies.getMovies(req, res));
 
 // Error handling middleware
 app.use((error, req, res, next) => {
