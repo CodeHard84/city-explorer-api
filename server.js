@@ -12,9 +12,9 @@ const { Movies } = require('./movies');
 const cors = require('cors');
 app.use(cors({ origin: '*' }));
 
-app.get('/weather', Forecast.getForecast(req, res));
+app.get('/weather', (req, res) => Forecast.getForecast(req, res));
 
-app.get('/movies', Movies.getMovies(req, res));
+app.get('/movies', (req, res) => Movies.getMovies(req, res));
 
 // Error handling middleware
 app.use((error, req, res, next) => {
