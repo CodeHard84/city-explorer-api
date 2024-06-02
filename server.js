@@ -8,6 +8,9 @@ const Cache = require('./modules/cache');
 // Create a new global cache object
 const cache = new Cache(560000);
 
+// Now each module needs to require the server.js file to access the cache object.
+module.exports = cache;
+
 
 // Import the weather and movies modules
 const { Forecast } = require('./modules/weather');
@@ -35,6 +38,3 @@ app.get('*', (req, res) => {
 app.listen(port, () => {
   console.log(`Listening at http://localhost:${port}`);
 });
-
-// Now each module needs to require the server.js file to access the cache object.
-module.exports = cache;

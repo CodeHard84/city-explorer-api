@@ -7,6 +7,9 @@ class Movies {
       const searchQuery = req.query.query || 'popular';
       const cacheKey = `movies_${searchQuery}`;
 
+      // Debug
+      console.log('Cache instance:', cache);
+
       if (cache.has(cacheKey)) {
         return res.json(cache.get(cacheKey));
       }
