@@ -2,35 +2,32 @@ const axios = require('axios');
 const WEATHER_API_KEY = process.env.WEATHER_API_KEY;
 
 class Forecast {
-  constructor(searchQuery, lat, lon) {
-    this.lat = lat;
-    this.lon = lon;
-  }
-
-  async getForecast() {
+  static async getForecast(req, res) {
     try {
+      const lat = req.query.lat
+      const lon = req.query.lon
       const response = await axios.get(`https://api.weatherbit.io/v2.0/forecast/daily`, {
         params: {
-          lat: this.lat,
-          lon: this.lon,
+          lat: lat,
+          lon: lon,
           key: WEATHER_API_KEY
         }
       });
       const weatherData = response.data.data;
 
-      return weatherData.map(day => ({
-        description: `Low of ${celsiusToFahrenheit(day.low_temp)}°F, high of ${celsiusToFahrenheit(day.high_temp)}°F with ${day.weather.description}.`,
+      res.json(weatherData.map(day => ({
+        description: `Low of ${Forecast.celsiusToFahrenheit(day.low_temp)}°F, high of ${Forecast.celsiusToFahrenheit(day.high_temp)}°F with ${day.weather.description}.`,
         date: day.valid_date
-      }));
+      })));
     } catch (error) {
       console.log(error);
-      throw new Error('Error getting weather data.');
+      res.status(500).send('Error getting weather data.');
     }
+  }
+
+  static celsiusToFahrenheit(celsius) {
+    return Math.round((celsius * 9) / 5 + 32);
   }
 }
 
-function celsiusToFahrenheit(celsius) {
-  return Math.round((celsius * 9) / 5 + 32);
-}
-
-module.exports = { Forecast, celsiusToFahrenheit };
+module.exports = { Forecast };
