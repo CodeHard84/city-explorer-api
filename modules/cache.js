@@ -1,5 +1,5 @@
 class Cache {
-    constructor(maxAge = 60000) {
+    constructor(maxAge = 560000) {
         this.cache = {};
         this.maxAge = maxAge;
         this.timer = null;

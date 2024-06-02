@@ -5,8 +5,8 @@ const app = express();
 const port = process.env.PORT || 3000;
 const Cache = require('./modules/cache');
 
-// Create a new global cache object with a max age of 60000 milliseconds
-const cache = new Cache(60000);
+// Create a new global cache object
+const cache = new Cache(560000);
 
 
 // Import the weather and movies modules
